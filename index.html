@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After the Nukes | Vault-Tec OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fallout-green: #1aff1a;
+            --fallout-bg: #0a0a0a;
+            --fallout-border: #1aff1a88;
+            --alert-red: #ff3333;
+            --warning-yellow: #ffcc00;
+        }
+
+        body {
+            background-color: var(--fallout-bg);
+            color: var(--fallout-green);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        /* Efeito de scanline do monitor antigo */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 2px solid var(--fallout-green);
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(26, 255, 26, 0.2);
+            background: rgba(0, 5, 0, 0.9);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--fallout-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        h1 { font-size: 3.5rem; margin: 0; }
+        h2 { border-bottom: 1px solid var(--fallout-border); margin-top: 30px; color: white; }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-around;
+            background: var(--fallout-green);
+            color: black;
+            font-weight: bold;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Mural de Avisos */
+        .notice-board {
+            border: 2px solid var(--alert-red);
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(255, 51, 51, 0.1);
+        }
+        .notice-board h3 { color: var(--alert-red); margin: 0; animation: blink 1s infinite; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* Aviso de KeepInventory */
+        .death-warning {
+            border: 2px solid var(--warning-yellow);
+            padding: 15px;
+            margin: 20px 0;
+            background: rgba(255, 204, 0, 0.1);
+            color: var(--warning-yellow);
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card { border: 1px solid var(--fallout-border); padding: 10px; text-align: center; }
+
+        /* Spawn Protocol */
+        .coords-box {
+            background: rgba(26, 255, 26, 0.2);
+            padding: 15px;
+            font-size: 1.8rem;
+            border: 1px dashed var(--fallout-green);
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .spawn-protocol {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spawn-card img {
+            width: 100%;
+            border: 1px solid var(--fallout-green);
+            filter: grayscale(100%) sepia(100%) hue-rotate(50deg) brightness(1.2);
+        }
+
+        /* Download Buttons */
+        .download-zone {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border: 2px solid;
+            transition: 0.2s;
+        }
+
+        .btn-performance { color: var(--fallout-green); border-color: var(--fallout-green); }
+        .btn-graphics { background: var(--fallout-green); color: black; border-color: var(--fallout-green); }
+        .btn:hover { transform: scale(1.02); filter: brightness(1.2); }
+
+        /* Changelog */
+        .changelog {
+            background: rgba(26, 255, 26, 0.05);
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px inset var(--fallout-border);
+        }
+
+        .version-tag { color: white; font-weight: bold; margin-top: 20px; display: block; border-left: 4px solid var(--fallout-green); padding-left: 10px; }
+        ul { list-style-type: "> "; padding-left: 20px; }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--fallout-border);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>AFTER THE NUKES</h1>
+        <p>[ SISTEMA OPERACIONAL DA VAULT-TEC v1.20.1 ]</p>
+    </header>
+
+    <div class="status-bar">
+        <span>ESTADO: OPERACIONAL</span>
+        <span>RADIAÇÃO: ALTA</span>
+        <span>MODO: 1.5.0 CINEMA</span>
+    </div>
+
+    <div class="notice-board">
+        <h3>[!] ALERTAS DE SEGURANÇA</h3>
+        <p>- SERVIDOR REINICIA DIARIAMENTE ÀS 04:00 AM.</p>
+        <p>- MANTENHA O MOD 'PACKET FIXER' INSTALADO PARA EVITAR QUEDAS.</p>
+    </div>
+
+    <section id="introducao">
+        <h2>> INTRODUÇÃO</h2>
+        <p>O MUNDO COMO CONHECÍAMOS FOI REDUZIDO A CINZAS. AFTER THE NUKES É O PROTOCOLO FINAL DE SOBREVIVÊNCIA. 
+           RECURSOS ESCASSOS, AMBIENTE TÓXICO E DESAFIOS CONSTANTES. BEM-VINDO À WASTELAND.</p>
+    </section>
+
+    <div class="death-warning">
+        <strong>[ ADVERTÊNCIA CRÍTICA ]</strong><br>
+        KEEPINVENTORY: <span style="text-decoration: underline;">DESATIVADO</span><br>
+        MORTE RESULTA EM PERDA TOTAL DE ITENS NO LOCAL. 
+        REUPERE SEU CORPO PARA RETOMAR SEUS PERTENCES.
+    </div>
+
+    <section id="specs">
+        <h2>> ESPECIFICAÇÕES DO SISTEMA</h2>
+        <div class="info-grid">
+            <div class="card"><strong>VERSÃO MC:</strong><br>1.20.1</div>
+            <div class="card"><strong>ENGINE:</strong><br>Forge 47.2.0</div>
+            <div class="card"><strong>RAM:</strong><br>4GB - 6GB</div>
+            <div class="card"><strong>TIPO:</strong><br>HARDCORE SURVIVAL</div>
+        </div>
+    </section>
+
+    <section id="spawn">
+        <h2>> PROTOCOLO DE INSERÇÃO (SPAWN)</h2>
+        <p>A JORNADA COMEÇA NA ENTRADA PRINCIPAL DA VAULT. SIGA PARA AS COORDENADAS:</p>
+        <div style="text-align: center;">
+            <div class="coords-box">X: -16 | Y: 89 | Z: -322</div>
+        </div>
+        <div class="spawn-protocol">
+            <div class="spawn-card">
+                <img src="print1.jpg" alt="Entrada">
+                <span>[ VISTA EXTERIOR ]</span>
+            </div>
+            <div class="spawn-card">
+                <img src="print2.jpg" alt="Interior">
+                <span>[ VISTA INTERIOR ]</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="downloads">
+        <h2>> MÓDULOS DE DOWNLOAD DISPONÍVEIS</h2>
+        <div class="download-zone">
+            <a href="https://www.mediafire.com/file/xs8vk6kipheiy3t/After+The+Nukes+1.3+(Versão+recomendada).rar/file" class="btn btn-performance">
+                MODO PERFORMANCE<br><small>Foco em FPS e Estabilidade</small>
+            </a>
+            <a href="https://www.mediafire.com/file/uyqp0yavkem89oc/After+The+Nukes+1.5+(Modo+cinema).rar/file" class="btn btn-graphics">
+                MODO CINEMÁTICO<br><small>v1.5.0 - Gráficos e Shaders</small>
+            </a>
+        </div>
+    </section>
+
+    <section id="changelog">
+        <h2>> LOG DE ATUALIZAÇÕES (CHANGELOG)</h2>
+        <div class="changelog">
+            <span class="version-tag">VERSÃO 1.5.0 [ATUAL]</span>
+            <ul>
+                <li>Implementação do 'MODO CINEMÁTICO' com suporte a Shaders avançados.</li>
+                <li>Ajustes de iluminação global para maior imersão pós-apocalíptica.</li>
+            </ul>
+
+            <span class="version-tag">VERSÃO 1.3.0</span>
+            <ul>
+                <li>Exclusão de arquivos desnecessários nos arquivos Zip.</li>
+                <li>Versão 'MODO PERFORMANCE' criada.</li>
+            </ul>
+
+            <span class="version-tag">VERSÃO 1.2.0</span>
+            <ul>
+                <li>Adicionado mod 'Packet Fixer' para resolver erros de Payload.</li>
+                <li>Otimização de memória RAM com 'FerriteCore' e 'ModernFix'.</li>
+                <li>Novas construções destruídas adicionadas ao mapa 'saves'.</li>
+            </ul>
+
+            <span class="version-tag">VERSÃO 1.1.0</span>
+            <ul>
+                <li>Correção de crash ao abrir o menu 'Fancy Menu'.</li>
+                <li>Ajuste no tempo de timeout para 600 segundos (Connectivity).</li>
+                <li>Inclusão do IP automático no arquivo servers.dat.</li>
+            </ul>
+
+            <span class="version-tag">VERSÃO 1.0.0</span>
+            <ul>
+                <li>Lançamento inicial do protocolo After the Nukes.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="instrucoes">
+        <h2>> INSTRUÇÕES DE INSTALAÇÃO</h2>
+        <ul>
+            <li>Instale o Forge 1.20.1 (Versão 47.2.0 ou superior).</li>
+            <li>Baixe o módulo desejado (Performance ou Cinema).</li>
+            <li>Mova as pastas 'mods' e 'config' para sua .minecraft.</li>
+            <li>Certifique-se de alocar pelo menos 6GB de RAM no launcher.</li>
+        </ul>
+    </section>
+
+    <div class="footer">
+        VAULT-TEC INDUSTRIES © 2026<br>
+        "PREPARADOS PARA O FUTURO"
+    </div>
+</div>
+
+</body>
+</html>
